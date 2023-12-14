@@ -1,6 +1,6 @@
 Séance 1 :
 
-Nous avons tout d'abord peaufiner notre projet c'est-à-dire la répartition des tâches, le planning, ce que devait faire concrètementt notre projet (de manière plus approfondie que la semaine dernière). 
-Nous avons également étudier du projet que l'on nous a fourni : le fonctionnement du jeu, l'algorithme. 
-Nous avons commencé à faire le programme et fait des tests. Nous essayons de comprendre comment récupérer la position de l'appui tactile et allumer les LEDs.
+Nous avons tout d'abord peaufiner notre projet c'est-à-dire la répartition des tâches, le planning, ce que doit faire concrètement notre projet (de manière plus approfondie que la semaine dernière). 
+Nous avons également étudier le projet que l'on nous a fourni (l'écran tactile) : le fonctionnement du jeu et l'algorithme. 
+Nous avons commencé à faire le programme et fait des tests sur l'allumage des LEDs. Nous essayons de comprendre comment récupérer la position de l'appui tactile et allumer les LEDs en fonction.
 Nous réfléchissons aussi sur l'algorithme du morpion pour vérifier la fin de la partie et nous avons cherché des programmes pour cela sur Internet.
