@@ -1,0 +1,3 @@
+Nous avons chercher comment améliorer la sensibilité de l'écran tactile car il est actuellement assez 
+difficile d'allumer une case. Nous comptons modifier les résistances reliées à l'écran et changer la manière de récupérer les coordonnées de l'appui dans le programme : passer d'une bibliothèque à une fonction simple.
+Ensuite, nous avons continué le programme : le score s'affiche et la partie recommence. Il nous manque encore à réinitialiser la partie en cas d'égalité.
