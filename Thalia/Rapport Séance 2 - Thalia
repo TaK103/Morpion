@@ -1,0 +1,284 @@
+Nous avons utilisé le programme de Mirco pour essayer de comprendre comment fonctionne l'éclairage des LEDs. Le programme n'était malheureusement pas complet donc nous n'avons pas pu
+faire autre chose pour le moment. Cela a été assez long de comprendre et faire des tests nous n'avons donc pas fait autre chose durant cette séance.
+
+Programme de Mirco :
+
+//#include <Adafruit_NeoPixel.h>
+#include "LittleFS.h"
+
+// Parameter 32 = number of pixels in strip
+// Parameter 2 = pin number (most are valid)
+// Parameter 3 = pixel type flags, add together as needed:
+//   NEO_KHZ800  800 KHz bitstream (most NeoPixel products w/WS2812 LEDs)
+//   NEO_KHZ400  400 KHz (classic 'v1' (not v2) FLORA pixels, WS2811 drivers)
+//   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
+//   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
+int X=120;
+bool fin_du_jeu = True;
+int matrice_led[11][11]={
+  {0, 21, 22, 43, 44, 65, 66, 87, 88, 109, 110},
+  {1, 20, 23, 42, 45, 64, 67, 86, 89, 108, 111},
+  {2, 19, 24, 41, 46, 63, 68, 85, 90, 107, 112},
+  {3, 18, 25, 40, 47, 62, 69, 84, 91, 106, 113},
+  {4, 17, 26, 39, 48, 61, 70, 83, 92, 105, 114},
+  {5, 16, 27, 38, 49, 60, 71, 82, 93, 104, 115},
+  {6, 15, 28, 37, 50, 59, 72, 81, 94, 103, 116},
+  {7, 14, 29, 36, 51, 58, 73, 80, 95, 102, 117},
+  {8, 13, 30, 35, 52, 57, 74, 79, 96, 101, 118},
+  {9, 12, 31, 34, 53, 56, 75, 78, 97, 100, 119},
+  {10, 11, 32, 33, 54, 55, 76, 77, 98, 99, 120}
+  };
+
+int matrice_base[11][11]={
+  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+  {1, 0, 1, 0, 1, 0, 1, 0, 1, 4, 4},
+  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+  {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+  {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+  {1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+  {2, 3, 1, 0, 1, 0, 1, 0, 1, 0, 1},
+  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+}
+
+int x1 = 10;
+int y1 = 10;
+int a = 2;
+int b = a/2;
+int case_courantex= x1; int case_courantey = y1+4*a;
+int case_courantei= 9; int case_courantej = 1;
+//int posx20 = x1; int posy20 = y1;
+//int posx18 = x1; int posy18 = y1+a;
+//int posx16 = x1; int posy16 = y1+2*a;
+//int posx14 = x1; int posy14 = y1+3*a;
+//int posx12 = x1; int posy12 = y1+4*a;
+//int posx42 = x1+a; int posy42 = y1;
+//int posx40 = x1+a; int posy40 = y1+a;
+//int posx38 = x1+a; int posy38 = y1+2*a;
+//int posx36 = x1+a; int posy36 = y1+3*a;
+//int posx34 = x1+a; int posy34 = y1+4*a;
+//int posx64 = x1+2*a; int posy64 = y1;
+//int posx62 = x1+2*a; int posy62 = y1+a;
+//int posx60 = x1+2*a; int posy60 = y1+2*a;
+//int posx58 = x1+2*a; int posy58 = y1+3*a;
+//int posx56 = x1+2*a; int posy56 = y1+4*a;
+//int posx86 = x1+3*a; int posy86 = y1;
+//int posx84 = x1+3*a; int posy84 = y1+a;
+//int posx82 = x1+3*a; int posy82 = y1+2*a;
+//int posx80 = x1+3*a; int posy80 = y1+3*a;
+//int posx78 = x1+3*a; int posy78 = y1+4*a;
+//int posx108 = x1+4*a; int posy108 = y1;
+//int posx106 = x1+4*a; int posy106 = y1+a;
+//int posx104 = x1+4*a; int posy104 = y1+2*a;
+//int posx102 = x1+4*a; int posy102 = y1+3*a;
+//int posx100 = x1+4*a; int posy100 = y1+4*a;
+
+
+LittleFS.open("C:\Users\user\OneDrive\Bureau\Arduino project\python maze/maze.txt", "r");   //Ouverture fichier pour le lire
+  for(int k=0;k<f.size();k++){
+    char c = f.read(); //Read file
+
+int matrice_maze[11][11]={1,1,1,1,1,1,1,1,1,1,1,1,0,1,0,0,0,0,0,1,0,1,1,0,1,0,1,1,1,0,1,0,1,1,0,1,0,1,0,0,0,1,0,1,1,0,1,0,1,1,1,1,1,0,1,1,0,1,0,0,0,0,0,1,0,1,1,0,1,1,1,1,1,0,1,0,1,1,0,1,0,0,0,0,0,1,0,1,1,0,1,0,1,1,1,1,1,0,1,1,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1};
+
+void afficher_maze(){
+    for(int i = 0; i < 11; i++ ) { // On fait une boucle pour définir la couleur de chaque led
+          // setPixelColor(n° de led, Rouge, Vert, Bleu)
+      for (int j = 0; j < 11; j++){
+        if (matrice_base[i][j]==1){
+         strip.setPixelColor(matrice_led[i][j], 223, 0, 0);
+        }
+        else if(matrice_base[i][j]==2){
+          strip.setPixelColor(matrice_led[i][j], 100, 100, 100);
+        }
+        else if(matrice_base[i][j]==3){
+          strip.setPixelColor(matrice_led[i][j], 100, 100, 100);
+        }
+        else if(matrice_base[i][j]==4){
+         strip.setPixelColor(matrice_led[i][j], 0, 223, 0);
+        }
+        else {
+         strip.setPixelColor(matrice_led[i][j], 0, 0, 223);
+        }       
+      }
+    }
+  
+  strip.show(); 
+  delay(100); // on affiche qq secondes
+
+  for(int i = 0; i < 11; i++ ) { // On fait une boucle pour définir la couleur de chaque led
+          // setPixelColor(n° de led, Rouge, Vert, Bleu)
+    for (int j = 0; j < 11; j++){
+      if (matrice_base[i][j]==1){
+       strip.setPixelColor(matrice_led[i][j], 223, 0, 0);
+       }
+      else if(matrice_base[i][j]==2){
+         strip.setPixelColor(matrice_led[i][j], 100, 100, 100);
+      }
+      else if(matrice_base[i][j]==3){
+        strip.setPixelColor(matrice_led[i][j], 0, 0, 0);
+      }
+      else if(matrice_base[i][j]==4){
+       strip.setPixelColor(matrice_led[i][j], 0, 223, 0);
+      }
+      else {
+       strip.setPixelColor(matrice_led[i][j], 0, 0, 223);
+      }       
+    }
+  }
+  strip.show(); 
+  delay(100); // on affiche qq secondes
+}
+
+
+void clignoter_maze(){
+    for(int i = 0; i < 11; i++ ) { // On fait une boucle pour définir la couleur de chaque led
+          // setPixelColor(n° de led, Rouge, Vert, Bleu)
+      for (int j = 0; j < 11; j++){
+        if (matrice_base[i][j]==1){
+         strip.setPixelColor(matrice_led[i][j], 223, 0, 0);
+        }
+        else if(matrice_base[i][j]==2){
+          strip.setPixelColor(matrice_led[i][j], 100, 100, 100);
+        }
+        else if(matrice_base[i][j]==3){
+          strip.setPixelColor(matrice_led[i][j], 0, 0, 223);
+        }
+        else if(matrice_base[i][j]==4){
+         strip.setPixelColor(matrice_led[i][j], 0, 223, 0);
+        }
+        else {
+         strip.setPixelColor(matrice_led[i][j], 0, 0, 223);
+        }       
+      }
+    }
+  
+  strip.show(); 
+  delay(100); // on affiche qq secondes
+
+  for(int i = 0; i < 11; i++ ) { // On fait une boucle pour définir la couleur de chaque led
+          // setPixelColor(n° de led, Rouge, Vert, Bleu)
+    for (int j = 0; j < 11; j++){
+      if (matrice_base[i][j]==1){
+       strip.setPixelColor(matrice_led[i][j], 223, 0, 0);
+       }
+      else if(matrice_base[i][j]==2){
+         strip.setPixelColor(matrice_led[i][j], 100, 100, 100);
+      }
+      else if(matrice_base[i][j]==3){
+        strip.setPixelColor(matrice_led[i][j], 0, 0, 0);
+      }
+      else if(matrice_base[i][j]==4){
+       strip.setPixelColor(matrice_led[i][j], 0, 223, 0);
+      }
+      else {
+       strip.setPixelColor(matrice_led[i][j], 0, 0, 0);
+      }       
+    }
+  }
+  strip.show(); 
+  delay(100); // on affiche qq secondes
+}
+
+
+//Adafruit_NeoPixel strip = Adafruit_NeoPixel(X, 6, NEO_GRB + NEO_KHZ800);
+void setup() {
+//  strip.begin();
+//  strip.show(); // Initialise toute les led à 'off'
+  Serial.begin(9600);
+
+  
+  }
+
+void loop() {
+  // put your main code here, to run repeatedly:
+  afficher_maze();
+  if (bouton est préssé){
+    fin_du_jeu = False;
+  }
+  else{
+
+  }
+  while fin_du_jeu == False{
+  for(int i = 0; i < 11; i++ ) { // On fait une boucle pour définir la couleur de chaque led
+        // setPixelColor(n° de led, Rouge, Vert, Bleu)
+    for (int j = 0; j < 11; j++){
+      if (matrice_maze[i][j]==1){
+        strip.setPixelColor(matrice_led[i][j], 223, 0, 0);
+      }
+      else {
+        strip.setPixelColor(matrice_led[i][j], 0, 0, 223);
+      }      
+    }
+  }
+  strip.show(); // on affiche 
+  delay(1000); // 
+  while lire(x,y)==false{
+    afficher_maze();
+  }
+  if ((-b <= (case_courantex-xread)) && (abs(case_courantey-yread) <= b/2) && ((case_courantex-xread) < 0)){
+    if (matrice_maze[case_courantei][case_courantej+1] = 0){
+      matrice_base[case_courantei][case_courantej]= 0;
+      case_courantej += 2;
+      matrice_base[case_courantei][case_courantej]= 3;
+      afficher_maze();
+    }
+    else{
+      for (int g = 0; g < 6; g++){
+        clignoter_maze();
+      }
+      fin_du_jeu = True;
+    }
+  }
+  else if (((case_courantex-xread) <= b) && (abs(case_courantey-yread) <= b)/2 && ((case_courantex-xread) > 0)){
+    if (matrice_maze[case_courantei][case_courantej-1] = 0){
+      matrice_base[case_courantei][case_courantej]= 0;
+      case_courantej -= 2;
+      matrice_base[case_courantei][case_courantej]= 3;
+      afficher_maze();
+    }
+    else{
+      for (int g = 0; g < 6; g++){
+        clignoter_maze();
+      }
+      fin_du_jeu = True;
+    }
+  }
+  else if ((abs(case_courantex-xread) <= b/2) && (-b <= (case_courantey-yread)) && ((case_courantey-yread) < 0)){
+    if (matrice_maze[case_courantei+1][case_courantej] = 0){
+      matrice_base[case_courantei][case_courantej]= 0;
+      case_courantej += 2;
+      matrice_base[case_courantei][case_courantej]= 3;
+      afficher_maze();
+    }
+    else{
+      for (int g = 0; g < 6; g++){
+        clignoter_maze();
+      }
+      fin_du_jeu = True;
+    }
+  }
+  else if ((abs(case_courantex-xread) <= b/2) && ((case_courantey-yread) <= b) && ((case_courantey-yread) > 0)){
+    if (matrice_maze[case_courantei-1][case_courantej] = 0){
+      matrice_base[case_courantei][case_courantej]= 0;
+      case_courantej -= 2;
+      matrice_base[case_courantei][case_courantej]= 3;
+      afficher_maze();
+    }
+    else{
+      for (int g = 0; g < 6; g++){
+        clignoter_maze();
+      }
+      fin_du_jeu = True;
+    }
+  }
+  else{
+    for (int g = 0; g < 4; g++){
+      clignoter_maze();
+    }
+  }
+
+
+  }
+}
