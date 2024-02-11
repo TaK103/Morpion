@@ -1,0 +1,5 @@
+Nous avons avancé sur le programme du morpion : 
+- Les cases s'allument à l'endroit où l'on appuie.
+- La couleur de la case alterne entre rouge et jaune pour distinguer les deux joueurs.
+- On ne peut pas appuyer sur une case déjà allumée.
+Pour la fin de partie, nous arrivons à savoir si la partie est finie ou non mais pour l'instant rien ne se passe. Nous n'avons pas encore codé la partie pour recommencer la partie et modifier le score et l'afficher.
