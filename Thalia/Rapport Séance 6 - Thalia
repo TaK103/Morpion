@@ -1,0 +1,6 @@
+Nous avons fini le programme du morpion :
+- Un écran de victoire s'affiche après chaque victoire, nous voulons aussi en rajouter un en cas d'égalité
+- Les scores s'affichent correctement et se réinitialisent si un des joueurs atteint 5 points
+
+Nous avons ensuite modifié la manière dont nous récupérons la position de l'appui. Nous n'utilisons plus de bibliothèque particulière.
+L'appui se fait avec beaucoup plus d'efficacité mais nous avons maintenant des problèmes quand à l'allumage des cases car l'écran détecte toujours un appui.
