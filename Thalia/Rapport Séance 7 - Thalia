@@ -1,0 +1,6 @@
+Le jeu fonctionne correctement : les parties se terminent correctement et l'affichage du score est correct. De plus, l'appui tactile se fait 
+correctement sans avoir à appuyer très fort sur l'écran.
+Il y a juste encore un petit bug avec la case 3 qui s'allume de tant en temps quand on appuie sur 3 des 9 cases.
+Nous avons aussi rajouté un écran en cas d'égalité comme quand il y a une victoire.
+Et finalement nous avons integré le bouton dans le programme : il faut appuyer dessus pour commencer la partie et rappuyer pour éteindre toutes les LEDs
+et réinitialiser la partie.
