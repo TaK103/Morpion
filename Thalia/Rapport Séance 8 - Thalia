@@ -1,0 +1,5 @@
+Le jeu du morpion fonctionne correctement : plusieurs problèmes notamment d'affichage ont été réglés durant cette séance.
+Nous essayons de rajouter un deuxième jeu : 
+Une série de cases s'allument une par une puis s'éteignent, il faut ensuite reproduire le motif qui vient de s'afficher, de plus en plus de cases s'allument.
+Pour l'instant les cases s'allument aléatoirement et de plus en plus de cases s'allument mais l'appui du joueur n'est pas pris en compte : le score ne s'augmente donc pas. 
+Nous avons également commencé à programmer l'écran de sélection du jeu.
